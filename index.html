@@ -328,80 +328,7 @@ function FlashcardsMode({ widgets, selectedCats }) {
   );
 }
 
-// --- PROMPT MODE ---
-function PromptMode({ widgets, selectedCats }) {
-  const pool = useMemo(
-    () => shuffle(widgets.filter(w => selectedCats.includes(w.c))),
-    [widgets, selectedCats]
-  );
-  const [idx, setIdx] = useState(0);
-  const [revealed, setRevealed] = useState(false);
 
-  // Reset index when categories change
-  useEffect(() => {
-    setIdx(0);
-    setRevealed(false);
-  }, [selectedCats]);
-
-  if (!pool.length) return <div style={{ textAlign: "center", padding: 40, color: "#94a3b8" }}>Vyber kategorii</div>;
-
-  const card = pool[idx % pool.length];
-
-  return (
-    <div style={{ maxWidth: 560, margin: "0 auto" }}>
-      <div style={{ fontSize: 12, color: "#94a3b8", textAlign: "center", marginBottom: 16 }}>
-        {idx % pool.length + 1}/{pool.length}
-      </div>
-      <div style={{
-        background: "#fefce8", borderRadius: 16, padding: 24,
-        border: "2px solid #fde68a", marginBottom: 16,
-      }}>
-        <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 1, color: "#a16207", marginBottom: 8 }}>
-          🤖 AI Prompt
-        </div>
-        <div style={{ fontSize: 16, lineHeight: 1.6, color: "#713f12", fontWeight: 500 }}>
-          {card.p}
-        </div>
-      </div>
-
-      <div style={{ textAlign: "center", marginBottom: 16, fontSize: 14, color: "#64748b" }}>
-        Jaký widget by AI mělo použít?
-      </div>
-
-      {!revealed ? (
-        <div style={{ textAlign: "center" }}>
-          <button onClick={() => setRevealed(true)} style={{
-            background: "#f59e0b", color: "white", border: "none", borderRadius: 10,
-            padding: "10px 28px", fontSize: 14, fontWeight: 600, cursor: "pointer",
-          }}>
-            👁️ Zobrazit odpověď
-          </button>
-        </div>
-      ) : (
-        <>
-          <div style={{
-            background: "#f0fdf4", borderRadius: 16, padding: 20,
-            border: "2px solid #86efac", textAlign: "center",
-          }}>
-            <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'JetBrains Mono', monospace", color: "#065f46" }}>
-              {card.w}
-            </div>
-            <div style={{ marginTop: 8 }}><CategoryPill cat={card.c} /></div>
-            <div style={{ fontSize: 14, color: "#334155", marginTop: 12, lineHeight: 1.5 }}>{card.d}</div>
-          </div>
-          <div style={{ textAlign: "center", marginTop: 16 }}>
-            <button onClick={() => { setRevealed(false); setIdx(i => i + 1); }} style={{
-              background: "#2563eb", color: "white", border: "none", borderRadius: 10,
-              padding: "10px 28px", fontSize: 14, fontWeight: 600, cursor: "pointer",
-            }}>
-              ➡️ Další prompt
-            </button>
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
 
 // --- CATEGORY FILTER ---
 function CategoryFilter({ selected, onChange }) {
@@ -450,7 +377,6 @@ function CategoryFilter({ selected, onChange }) {
 const MODES = [
   { id: "quiz", label: "🎲 Kvíz", desc: "Hádej widget podle popisu" },
   { id: "flash", label: "🃏 Kartičky", desc: "Obrať a procvičuj" },
-  { id: "prompt", label: "🤖 AI Prompt", desc: "Poznej widget z promptu" },
 ];
 
 function App() {
